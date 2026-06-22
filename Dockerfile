@@ -25,8 +25,7 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 nextjs
 
-# Copy folder public
-COPY --from=builder /app/public ./public
+# ❌ BARIS COPY PUBLIC SUDAH DIHAPUS KARENA FOLDER TIDAK ADA
 
 # Copy folder .next (karena tidak pakai standalone, kita copy seluruh hasil build)
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
