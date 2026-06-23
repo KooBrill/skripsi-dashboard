@@ -36,7 +36,7 @@ export default function Dashboard() {
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm">🛡️</div>
             <div>
-              <p className="text-sm font-semibold text-gray-800">Bangun Karya — Security Dashboard</p>
+              <p className="text-sm font-semibold text-gray-800">Coba Coba — Security Dashboard</p>
               <p className="text-xs text-gray-400">Active Defense System · v2.0</p>
             </div>
           </div>
