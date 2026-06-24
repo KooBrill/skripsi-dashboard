@@ -8,10 +8,10 @@ import AttackChart from './components/AttackChart'
 import LiveLog from './components/LiveLog'
 
 export default function Dashboard() {
-  const [threats, setThreats]   = useState<ThreatLog[]>([])
-  const [banned, setBanned]     = useState<BannedLog[]>([])
-  const [loading, setLoading]   = useState(true)
-  const [last, setLast]         = useState(new Date())
+  const [threats, setThreats]     = useState<ThreatLog[]>([])
+  const [banned, setBanned]       = useState<BannedLog[]>([])
+  const [loading, setLoading]     = useState(true)
+  const [last, setLast]           = useState(new Date())
   const [activeTab, setActiveTab] = useState<'threats' | 'banned'>('threats')
 
   const fetchData = useCallback(async () => {
@@ -23,8 +23,11 @@ export default function Dashboard() {
       setThreats(Array.isArray(t) ? t : [])
       setBanned(Array.isArray(b) ? b : [])
       setLast(new Date())
-    } catch (e) { console.error(e) }
-    finally { setLoading(false) }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -33,13 +36,11 @@ export default function Dashboard() {
     return () => clearInterval(t)
   }, [fetchData])
 
-  const uniqueIPs    = new Set(threats.map(t => t.ip_address)).size
-  const toolHits     = threats.filter(t => t.is_tool).length
+  const uniqueIPs = new Set(threats.map(t => t.ip_address)).size
+  const toolHits  = threats.filter(t => t.is_tool).length
 
   return (
     <div className="min-h-screen bg-gray-50">
-
-      {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -54,7 +55,9 @@ export default function Dashboard() {
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
               Sistem Aktif
             </div>
-            <p className="text-xs text-gray-400 font-mono">Update: {last.toLocaleTimeString('id-ID')}</p>
+            <p className="text-xs text-gray-400 font-mono">
+              Update: {last.toLocaleTimeString('id-ID')}
+            </p>
           </div>
         </div>
       </header>
@@ -66,7 +69,6 @@ export default function Dashboard() {
           </div>
         ) : (
           <>
-            {/* Stat Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <StatCard label="IP Diblokir"     value={banned.length}  color="red"   sub="permanen" />
               <StatCard label="Total Serangan"   value={threats.length} color="blue"  sub="semua event" />
@@ -74,13 +76,11 @@ export default function Dashboard() {
               <StatCard label="Pakai Tool"       value={toolHits}       color="green" sub="sqlmap, nikto, dll" />
             </div>
 
-            {/* Chart + Log */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <AttackChart data={threats} />
               <LiveLog data={threats} />
             </div>
 
-            {/* Tab */}
             <div className="flex gap-2 border-b border-gray-200">
               <button
                 onClick={() => setActiveTab('threats')}

@@ -20,14 +20,16 @@ export default function BannedTable({ data }: { data: BannedLog[] }) {
             </tr>
           </thead>
           <tbody>
-            {data.map((row) => (
+            {data.map(row => (
               <tr key={row.id} className="border-b border-gray-50 hover:bg-gray-50">
                 <td className="px-4 py-3 font-mono text-red-500 text-xs font-semibold">{row.ip_address}</td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
                     <div className="h-1.5 rounded-full bg-gray-100 w-16 overflow-hidden">
-                      <div className="h-full rounded-full bg-red-400"
-                        style={{ width: `${Math.min((row.final_score / 300) * 100, 100)}%` }} />
+                      <div
+                        className="h-full rounded-full bg-red-400"
+                        style={{ width: `${Math.min((row.final_score / 300) * 100, 100)}%` }}
+                      />
                     </div>
                     <span className="font-mono text-xs font-semibold text-red-500">{row.final_score}</span>
                   </div>
@@ -38,7 +40,9 @@ export default function BannedTable({ data }: { data: BannedLog[] }) {
               </tr>
             ))}
             {data.length === 0 && (
-              <tr><td colSpan={3} className="px-4 py-8 text-center text-gray-400 text-sm">Belum ada IP yang diblokir</td></tr>
+              <tr>
+                <td colSpan={3} className="px-4 py-8 text-center text-gray-400 text-sm">Belum ada IP yang diblokir</td>
+              </tr>
             )}
           </tbody>
         </table>

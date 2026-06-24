@@ -20,7 +20,7 @@ export default function ThreatTable({ data }: { data: ThreatLog[] }) {
             </tr>
           </thead>
           <tbody>
-            {data.map((row) => (
+            {data.map(row => (
               <tr key={row.id} className="border-b border-gray-50 hover:bg-gray-50">
                 <td className="px-4 py-3 font-mono text-blue-600 text-xs">{row.ip_address}</td>
                 <td className="px-4 py-3 font-mono text-xs text-gray-500">{row.uri}</td>
@@ -37,7 +37,9 @@ export default function ThreatTable({ data }: { data: ThreatLog[] }) {
               </tr>
             ))}
             {data.length === 0 && (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400 text-sm">Belum ada data serangan</td></tr>
+              <tr>
+                <td colSpan={6} className="px-4 py-8 text-center text-gray-400 text-sm">Belum ada data serangan</td>
+              </tr>
             )}
           </tbody>
         </table>

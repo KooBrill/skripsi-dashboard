@@ -1,5 +1,17 @@
-interface Props { label: string; value: number | string; color: 'red'|'blue'|'amber'|'green'; sub?: string }
-const c = { red:'text-red-500', blue:'text-blue-500', amber:'text-amber-500', green:'text-green-500' }
+interface Props {
+  label: string
+  value: number | string
+  color: 'red' | 'blue' | 'amber' | 'green'
+  sub?: string
+}
+
+const c = {
+  red:   'text-red-500',
+  blue:  'text-blue-500',
+  amber: 'text-amber-500',
+  green: 'text-green-500',
+}
+
 export default function StatCard({ label, value, color, sub }: Props) {
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
