@@ -1,4 +1,7 @@
 'use client'
+
+type RangeKey = '1h' | '4h' | '12h' | '24h' | '1w' | '1m' | '3m' | '6m' | '1y'
+
 import { useEffect, useState, useCallback } from 'react'
 import { ThreatLog, BannedLog } from '@/types'
 import StatCard from './components/StatCard'
@@ -13,11 +16,12 @@ export default function Dashboard() {
   const [loading, setLoading]     = useState(true)
   const [last, setLast]           = useState(new Date())
   const [activeTab, setActiveTab] = useState<'threats' | 'banned'>('threats')
+  const [chartRange, setChartRange] = useState<RangeKey>('24h')
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (range: RangeKey = chartRange) => {
     try {
       const [t, b] = await Promise.all([
-        fetch('/api/threats').then(r => r.json()),
+        fetch(`/api/threats?range=${range}`).then(r => r.json()),
         fetch('/api/banned').then(r => r.json()),
       ])
       setThreats(Array.isArray(t) ? t : [])
@@ -28,7 +32,13 @@ export default function Dashboard() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [chartRange])
+
+  const handleRangeChange = useCallback((r: RangeKey) => {
+    setChartRange(r)
+    setLoading(true)
+    fetchData(r)
+  }, [fetchData])
 
   useEffect(() => {
     fetchData()
@@ -77,7 +87,7 @@ export default function Dashboard() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <AttackChart data={threats} />
+              <AttackChart data={threats} range={chartRange} onRangeChange={handleRangeChange} />
               <LiveLog data={threats} />
             </div>
 
