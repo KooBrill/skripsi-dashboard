@@ -31,19 +31,19 @@ function nowWIB(): Date {
 
 const RANGES: Record<RangeKey, RangeConfig> = {
   '1h': {
-    label: '1 Jam', hours: 1, buckets: 12, bucketHours: 1 / 12,
+    label: '1 Jam', hours: 1, buckets: 24, bucketHours: 1 / 24,
     formatLabel: (d) => `${String(d.getUTCHours()).padStart(2,'0')}:${String(d.getUTCMinutes()).padStart(2,'0')}`,
-    showEvery: 3,
+    showEvery: 6,
   },
   '4h': {
-    label: '4 Jam', hours: 4, buckets: 16, bucketHours: 0.25,
+    label: '4 Jam', hours: 4, buckets: 24, bucketHours: 4 / 24,
     formatLabel: (d) => `${String(d.getUTCHours()).padStart(2,'0')}:${String(d.getUTCMinutes()).padStart(2,'0')}`,
-    showEvery: 4,
+    showEvery: 6,
   },
   '12h': {
-    label: '12 Jam', hours: 12, buckets: 12, bucketHours: 1,
-    formatLabel: (d) => `${String(d.getUTCHours()).padStart(2,'0')}:00`,
-    showEvery: 2,
+    label: '12 Jam', hours: 12, buckets: 24, bucketHours: 12 / 24,
+    formatLabel: (d) => `${String(d.getUTCHours()).padStart(2,'0')}:${String(d.getUTCMinutes()).padStart(2,'0')}`,
+    showEvery: 6,
   },
   '24h': {
     label: '24 Jam', hours: 24, buckets: 24, bucketHours: 1,
@@ -51,29 +51,29 @@ const RANGES: Record<RangeKey, RangeConfig> = {
     showEvery: 6,
   },
   '1w': {
-    label: '1 Minggu', hours: 24 * 7, buckets: 7, bucketHours: 24,
-    formatLabel: (d) => d.toLocaleDateString('id-ID', { weekday: 'short', timeZone: 'UTC' }),
-    showEvery: 1,
+    label: '1 Minggu', hours: 24 * 7, buckets: 24, bucketHours: (24 * 7) / 24,
+    formatLabel: (d) => `${d.getUTCDate()}/${d.getUTCMonth() + 1}`,
+    showEvery: 4,
   },
   '1m': {
-    label: '1 Bulan', hours: 24 * 30, buckets: 30, bucketHours: 24,
+    label: '1 Bulan', hours: 24 * 30, buckets: 24, bucketHours: (24 * 30) / 24,
     formatLabel: (d) => `${d.getUTCDate()}/${d.getUTCMonth() + 1}`,
-    showEvery: 5,
+    showEvery: 6,
   },
   '3m': {
-    label: '3 Bulan', hours: 24 * 90, buckets: 90, bucketHours: 24,
+    label: '3 Bulan', hours: 24 * 90, buckets: 24, bucketHours: (24 * 90) / 24,
     formatLabel: (d) => `${d.getUTCDate()}/${d.getUTCMonth() + 1}`,
-    showEvery: 15,
+    showEvery: 6,
   },
   '6m': {
-    label: '6 Bulan', hours: 24 * 180, buckets: 180, bucketHours: 24,
+    label: '6 Bulan', hours: 24 * 180, buckets: 24, bucketHours: (24 * 180) / 24,
     formatLabel: (d) => `${d.getUTCDate()}/${d.getUTCMonth() + 1}`,
-    showEvery: 30,
+    showEvery: 6,
   },
   '1y': {
-    label: '1 Tahun', hours: 24 * 365, buckets: 12, bucketHours: 24 * 30,
+    label: '1 Tahun', hours: 24 * 365, buckets: 24, bucketHours: (24 * 365) / 24,
     formatLabel: (d) => d.toLocaleDateString('id-ID', { month: 'short', timeZone: 'UTC' }),
-    showEvery: 1,
+    showEvery: 2,
   },
 }
 
