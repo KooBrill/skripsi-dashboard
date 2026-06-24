@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [threats, setThreats]     = useState<ThreatLog[]>([])
   const [banned, setBanned]       = useState<BannedLog[]>([])
   const [loading, setLoading]     = useState(true)
+  const [chartLoading, setChartLoading] = useState(false)
   const [last, setLast]           = useState(new Date())
   const [activeTab, setActiveTab] = useState<'threats' | 'banned'>('threats')
   const [chartRange, setChartRange] = useState<RangeKey>('24h')
@@ -31,12 +32,13 @@ export default function Dashboard() {
       console.error(e)
     } finally {
       setLoading(false)
+      setChartLoading(false)
     }
   }, [chartRange])
 
   const handleRangeChange = useCallback((r: RangeKey) => {
     setChartRange(r)
-    setLoading(true)
+    setChartLoading(true)
     fetchData(r)
   }, [fetchData])
 
@@ -87,7 +89,7 @@ export default function Dashboard() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <AttackChart data={threats} range={chartRange} onRangeChange={handleRangeChange} />
+              <AttackChart data={threats} range={chartRange} onRangeChange={handleRangeChange} loading={chartLoading} />
               <LiveLog data={threats} />
             </div>
 

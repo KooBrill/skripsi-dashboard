@@ -82,10 +82,11 @@ interface AttackChartProps {
   data: ThreatLog[]
   range: RangeKey
   onRangeChange: (r: RangeKey) => void
+  loading?: boolean
 }
 
 // ─── Komponen ────────────────────────────────────────────────────────────────
-export default function AttackChart({ data, range, onRangeChange }: AttackChartProps) {
+export default function AttackChart({ data, range, onRangeChange, loading = false }: AttackChartProps) {
   const cfg = RANGES[range]
 
   const chart = useMemo(() => {
@@ -145,29 +146,50 @@ export default function AttackChart({ data, range, onRangeChange }: AttackChartP
       </div>
 
       {/* Chart */}
-      <div className="flex items-end gap-0.5 h-28">
-        {chart.map((d, i) => (
-          <div key={i} className="flex-1 flex flex-col items-center gap-0.5 h-full justify-end">
-            <div
-              className={`w-full rounded-sm transition-all duration-500 ${
-                d.count === max && max > 0
-                  ? 'bg-red-400'
-                  : d.count > 0
-                  ? 'bg-blue-400'
-                  : 'bg-gray-100'
-              }`}
-              style={{
-                height: `${(d.count / max) * 100}%`,
-                minHeight: d.count > 0 ? '4px' : '2px',
-              }}
-              title={`${d.label} — ${d.count} serangan`}
-            />
-            <span className="text-gray-300 font-mono leading-none" style={{ fontSize: '7px' }}>
-              {i % cfg.showEvery === 0 ? d.label : ''}
-            </span>
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        /* ─── Skeleton Loading ─── */
+        <div className="flex items-end gap-0.5 h-28">
+          {Array.from({ length: cfg.buckets }, (_, i) => (
+            <div key={i} className="flex-1 flex flex-col items-center gap-0.5 h-full justify-end">
+              <div
+                className="w-full rounded-sm bg-gray-200 animate-pulse"
+                style={{
+                  height: `${20 + Math.sin(i * 0.7) * 15 + Math.random() * 30}%`,
+                  animationDelay: `${i * 50}ms`,
+                }}
+              />
+              <span className="font-mono leading-none" style={{ fontSize: '7px' }}>
+                <span className="inline-block w-4 h-1.5 bg-gray-200 rounded animate-pulse" style={{ animationDelay: `${i * 50}ms` }} />
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        /* ─── Chart Asli ─── */
+        <div className="flex items-end gap-0.5 h-28">
+          {chart.map((d, i) => (
+            <div key={i} className="flex-1 flex flex-col items-center gap-0.5 h-full justify-end">
+              <div
+                className={`w-full rounded-sm transition-all duration-500 ${
+                  d.count === max && max > 0
+                    ? 'bg-red-400'
+                    : d.count > 0
+                    ? 'bg-blue-400'
+                    : 'bg-gray-100'
+                }`}
+                style={{
+                  height: `${(d.count / max) * 100}%`,
+                  minHeight: d.count > 0 ? '4px' : '2px',
+                }}
+                title={`${d.label} — ${d.count} serangan`}
+              />
+              <span className="text-gray-300 font-mono leading-none" style={{ fontSize: '7px' }}>
+                {i % cfg.showEvery === 0 ? d.label : ''}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Footer info */}
       <div className="mt-2 flex items-center gap-3 text-xs text-gray-400">
@@ -177,6 +199,15 @@ export default function AttackChart({ data, range, onRangeChange }: AttackChartP
         <span className="flex items-center gap-1">
           <span className="w-2 h-2 rounded-sm bg-red-400 inline-block" /> Tertinggi
         </span>
+        {loading && (
+          <span className="flex items-center gap-1 text-blue-500">
+            <svg className="w-3 h-3 animate-spin" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+            Memuat...
+          </span>
+        )}
         <span className="ml-auto">GMT+7</span>
       </div>
     </div>
