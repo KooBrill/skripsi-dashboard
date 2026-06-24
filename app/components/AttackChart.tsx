@@ -8,7 +8,7 @@ export default function AttackChart({ data }: { data: ThreatLog[] }) {
       return {hour:d.getHours(),label:String(d.getHours()).padStart(2,'0'),count:0}
     })
     data.forEach(row=>{
-      const s=hours.find(h=>h.hour===new Date(row.blocked_at).getHours())
+      const s=hours.find(h=>h.hour===new Date(row.row.last_seen).getHours())
       if(s) s.count++
     })
     return hours
